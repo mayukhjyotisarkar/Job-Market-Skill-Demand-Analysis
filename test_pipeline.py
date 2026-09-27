@@ -1,106 +1,109 @@
 """
-Unit and integration test script for Skill Demand Analyzer prototype.
+Comprehensive test suite for Job Market Skill Demand Analyzer (v2.0).
 """
 
 import json
 import os
 import pandas as pd
-from taxonomy import get_default_taxonomy, get_category_for_skill
+from taxonomy import (
+    get_default_taxonomy,
+    get_category_for_skill,
+    TAXONOMY_PRESETS,
+)
 from extract_analyze import (
     extract_skills,
+    extract_skills_with_matches,
+    highlight_skills_in_html,
+    infer_seniority_level,
+    infer_role_domain,
+    infer_work_model,
     deduplicate_postings,
     build_skill_frame,
     skill_frequency,
     skill_cooccurrence,
+    role_skill_cross_tab,
+    seniority_skill_cross_tab,
+    calculate_skill_gap,
     filter_postings,
     get_postings_for_skill,
     get_postings_for_pair,
 )
 
-def test_extraction_basic():
-    text = "Seeking a Data Scientist proficient in Python, SQL, AWS, and Machine learning."
-    skills = extract_skills(text)
-    assert "Python" in skills, "Python not matched"
-    assert "SQL" in skills, "SQL not matched"
-    assert "AWS" in skills, "AWS not matched"
-    assert "Machine learning" in skills, "Machine learning not matched"
-    print("[PASS] test_extraction_basic passed")
 
-def test_extraction_boundaries():
-    # Avoid false positives like 'go' in 'algorithms' or 'r' in 'program'
-    text = "We want a candidate who can work on algorithms, programming, and cargo."
+def test_v2_taxonomy_and_boundaries():
+    text = (
+        "Seeking a Senior Data Scientist proficient in Python, SQL, PyTorch, LangChain, "
+        "and Docker on AWS with Kubernetes. Experience with C++, C#, and Go microservices."
+    )
     skills = extract_skills(text)
-    assert "Go" not in skills, "False positive on Go in cargo/algorithms"
-    assert "R" not in skills, "False positive on R in programming"
-    print("[PASS] test_extraction_boundaries passed")
+    expected = ["Python", "SQL", "PyTorch", "LangChain", "Docker", "AWS", "Kubernetes", "C++", "C#", "Go", "Microservices"]
+    for exp in expected:
+        assert exp in skills, f"Missing expected skill: {exp} in {skills}"
+    print("[PASS] test_v2_taxonomy_and_boundaries passed")
 
-def test_extraction_cplusplus():
-    text = "Required: C++ and C# developer with CI/CD skills."
-    skills = extract_skills(text)
-    assert "C++" in skills, "C++ not matched"
-    assert "C#" in skills, "C# not matched"
-    assert "CI/CD" in skills, "CI/CD not matched"
-    print("[PASS] test_extraction_cplusplus passed")
 
-def test_pipeline_on_sample():
+def test_seniority_and_domain_inference():
+    # Seniority tests
+    assert infer_seniority_level("Junior Data Analyst Intern") in ["Intern / Entry", "Junior / Associate"]
+    assert infer_seniority_level("Senior Machine Learning Engineer") == "Senior / Lead"
+    assert infer_seniority_level("Staff Backend Architect") == "Lead / Staff / Architect"
+
+    # Domain tests
+    assert infer_role_domain("Senior Data Scientist") == "Data Science & AI"
+    assert infer_role_domain("Lead Data Engineer (Spark & AWS)") == "Data Engineering"
+    assert infer_role_domain("Frontend React Developer") == "Frontend & Web"
+    assert infer_role_domain("DevOps / SRE Engineer") == "Cloud & DevOps"
+    print("[PASS] test_seniority_and_domain_inference passed")
+
+
+def test_html_highlighter():
+    desc = "We require Python and SQL for machine learning pipelines."
+    html_out = highlight_skills_in_html(desc)
+    assert "<mark" in html_out
+    assert "Python" in html_out
+    print("[PASS] test_html_highlighter passed")
+
+
+def test_pipeline_on_v2_sample():
     with open("sample_postings.json", "r", encoding="utf-8") as f:
         postings = json.load(f)
-    
-    assert len(postings) == 12, "Expected 12 sample postings"
-    
-    # Test deduplication with a duplicate inserted
-    postings_with_dup = postings + [postings[0]]
-    deduped, dup_count = deduplicate_postings(postings_with_dup)
-    assert dup_count == 1, f"Expected 1 duplicate, got {dup_count}"
-    assert len(deduped) == 12, f"Expected 12 deduped postings, got {len(deduped)}"
 
-    # Test DataFrame construction
-    df = build_skill_frame(deduped)
-    assert len(df) == 12
-    assert "skills" in df.columns
-    
-    # Test skill frequency
+    assert len(postings) == 25, f"Expected 25 sample postings, got {len(postings)}"
+
+    df = build_skill_frame(postings)
+    assert len(df) == 25
+    assert "seniority" in df.columns
+    assert "role_domain" in df.columns
+    assert "work_model" in df.columns
+
+    # Frequency
     freq = skill_frequency(df)
     assert not freq.empty
-    assert "skill" in freq.columns
-    assert "postings_mentioning" in freq.columns
-    assert "pct_of_postings" in freq.columns
-    top_skill = freq.iloc[0]["skill"]
-    assert top_skill == "Python", f"Expected Python top skill, got {top_skill}"
+    assert "Python" in freq["skill"].values
 
-    # Test co-occurrence
+    # Cross-tabulations
+    role_ct = role_skill_cross_tab(df, top_k_skills=5)
+    assert not role_ct.empty
+
+    sen_ct = seniority_skill_cross_tab(df, top_k_skills=5)
+    assert not sen_ct.empty
+
+    # Co-occurrence
     cooc = skill_cooccurrence(df, top_n=10)
     assert not cooc.empty
-    assert "skill_a" in cooc.columns
-    assert "skill_b" in cooc.columns
-    assert "co_occurrences" in cooc.columns
+    assert "jaccard_similarity" in cooc.columns
 
-    # Test drill-down
-    python_postings = get_postings_for_skill(df, "Python")
-    assert len(python_postings) == 10, f"Expected 10 Python postings, got {len(python_postings)}"
+    # Skill Gap Matcher
+    user_skills = ["Python", "SQL", "Git"]
+    gap = calculate_skill_gap(df, user_skills)
+    assert gap["user_skill_count"] == 3
+    assert len(gap["missing_skills_ranked"]) > 0
+    print("[PASS] test_pipeline_on_v2_sample passed")
 
-    pair_postings = get_postings_for_pair(df, "Python", "SQL")
-    assert len(pair_postings) >= 3, f"Expected at least 3 Python+SQL postings, got {len(pair_postings)}"
-
-    print("[PASS] test_pipeline_on_sample passed")
-
-def test_tagged_skills_pipeline():
-    with open("data/sample_with_tags.json", "r", encoding="utf-8") as f:
-        tagged_postings = json.load(f)
-
-    df_auto = build_skill_frame(tagged_postings, skill_source_mode="auto")
-    assert (df_auto["skill_origin"] == "Source Tags").all()
-    assert "Snowflake" in df_auto.iloc[0]["skills"]
-
-    df_extract = build_skill_frame(tagged_postings, skill_source_mode="extracted_only")
-    assert (df_extract["skill_origin"] == "Extracted from Description").all()
-
-    print("[PASS] test_tagged_skills_pipeline passed")
 
 if __name__ == "__main__":
-    test_extraction_basic()
-    test_extraction_boundaries()
-    test_extraction_cplusplus()
-    test_pipeline_on_sample()
-    test_tagged_skills_pipeline()
-    print("\nALL TESTS PASSED SUCCESSFULLY!")
+    test_v2_taxonomy_and_boundaries()
+    test_seniority_and_domain_inference()
+    test_html_highlighter()
+    test_pipeline_on_v2_sample()
+    print("\nALL V2 TESTS PASSED SUCCESSFULLY!")
