@@ -1,177 +1,322 @@
 [
   {
-    "title": "Software Engineer, University Grad",
-    "company": "Tech Co A",
-    "country": "Remote",
-    "posted_at": "2026-09-20",
-    "description": "Looking for a new grad to build software using C, C++, Java or Python, with experience in Unix/Linux, distributed systems and machine learning, contributing to natural language processing projects. Excellent communication and problem solving required."
+    "title":"Software Engineer, University Grad",
+    "company":"Tech Co A",
+    "country":"Remote (US)",
+    "salary":"$115,000 - $140,000 \/ year",
+    "posted_at":1789862400000,
+    "description":"Looking for a new grad with a Bachelor's Degree in Computer Science to build backend services using C, C++, Java or Python. 0-1 years of experience with Unix\/Linux and distributed systems. Contributing to natural language processing and REST APIs. Excellent communication and problem solving required."
   },
   {
-    "title": "Senior Software Engineer (Python)",
-    "company": "Tech Co B",
-    "country": "San Francisco, CA (Hybrid)",
-    "posted_at": "2026-09-18",
-    "description": "Build and maintain scalable Python microservices with FastAPI and Django. Deploy on AWS with Kubernetes and Docker, follow modern DevOps and CI/CD practices with GitHub Actions. On-call rotation."
+    "title":"Senior Software Engineer (Python & Microservices)",
+    "company":"Tech Co B",
+    "country":"San Francisco, CA (Hybrid)",
+    "salary":"$160,000 - $210,000 \/ year",
+    "posted_at":1789689600000,
+    "description":"Build scalable Python microservices with FastAPI and Django. Deploy on AWS with Kubernetes, Docker, and CI\/CD pipelines using GitHub Actions. 5+ years of experience in system design. Requirements: Python, FastAPI, Docker, AWS. Preferred: GraphQL and Terraform."
   },
   {
-    "title": "Staff Backend Engineer - Go & Distributed Systems",
-    "company": "Fintech Global",
-    "country": "New York, NY (Hybrid)",
-    "posted_at": "2026-09-25",
-    "description": "Lead architecture for high-throughput distributed systems in Go and Rust. PostgreSQL, Redis caching, gRPC, and Kafka streaming. System design, microservices, and mentoring junior engineers."
+    "title":"Staff Distributed Systems Architect (Go & Rust)",
+    "company":"Fintech Global",
+    "country":"New York, NY (Hybrid)",
+    "salary":"$210,000 - $275,000 \/ year",
+    "posted_at":1790294400000,
+    "description":"Lead architecture for high-throughput financial distributed systems in Go and Rust. 8+ years of experience. Master's Degree preferred. Deep experience with PostgreSQL, Redis caching, gRPC, and Apache Kafka event streaming. System design, microservices, and mentoring."
   },
   {
-    "title": "Frontend Engineer (React & TypeScript)",
-    "company": "SaaS Platform Inc",
-    "country": "Remote",
-    "posted_at": "2026-09-22",
-    "description": "Develop responsive web interfaces with React, Next.js, TypeScript, and Tailwind CSS. REST APIs and GraphQL integration, state management, and cross-browser performance optimization."
+    "title":"Senior Frontend Engineer (React & TypeScript)",
+    "company":"SaaS Platform Inc",
+    "country":"Remote",
+    "salary":"$145,000 - $185,000 \/ year",
+    "posted_at":1790035200000,
+    "description":"Develop responsive web applications with React, Next.js, TypeScript, and Tailwind CSS. 4+ years of experience building modern frontend architectures with REST APIs, GraphQL, state management, and web performance optimization."
   },
   {
-    "title": "Full Stack Software Developer",
-    "company": "Innovate Labs",
-    "country": "Austin, TX (Onsite)",
-    "posted_at": "2026-09-21",
-    "description": "Build full stack web apps with TypeScript, React, Node.js, Express.js, and MongoDB. Experience with Git, Docker, and agile sprint planning."
+    "title":"Full Stack Software Developer",
+    "company":"Innovate Labs",
+    "country":"Austin, TX (Onsite)",
+    "salary":"$125,000 - $160,000 \/ year",
+    "posted_at":1789948800000,
+    "description":"Build full-stack web applications with TypeScript, React, Node.js, Express.js, and MongoDB. 3+ years of experience. Experience with Git, Docker, and Agile Scrum delivery."
   },
   {
-    "title": "Senior Data Scientist",
-    "company": "Fintech D",
-    "country": "New York, NY (Hybrid)",
-    "posted_at": "2026-09-22",
-    "description": "Seeking a Senior Data Scientist strong in Python and SQL, with machine learning and deep learning experience in PyTorch or TensorFlow. Statistics, A/B testing, and NLP. Requirements: Python, SQL, scikit-learn. Preferred: LLM fine-tuning and LangChain."
+    "title":"Principal AI \/ LLM Applications Engineer",
+    "company":"AI Startup E",
+    "country":"Remote",
+    "salary":"$200,000 - $260,000 \/ year",
+    "posted_at":1790208000000,
+    "description":"Architect enterprise RAG pipelines with LangChain and LlamaIndex. 6+ years of experience. Fine tune LLMs and deploy on GCP or Azure. Vector Databases (Pinecone, Chroma, Milvus), PyTorch, model quantization, and prompt engineering."
   },
   {
-    "title": "Lead AI / Generative AI Engineer",
-    "company": "AI Startup E",
-    "country": "Remote",
-    "posted_at": "2026-09-24",
-    "description": "Lead design of RAG pipelines with LangChain and LlamaIndex. Fine tune LLMs and deploy on GCP or Azure. Experience with Vector Databases (Pinecone, Chroma), PyTorch, and prompt engineering."
+    "title":"Senior Data Scientist (ML & Deep Learning)",
+    "company":"Fintech D",
+    "country":"New York, NY (Hybrid)",
+    "salary":"$165,000 - $215,000 \/ year",
+    "posted_at":1790035200000,
+    "description":"Seeking a Senior Data Scientist with a Master's or PhD in Statistics\/CS. 4+ years experience. Strong in Python and SQL, with machine learning and deep learning experience in PyTorch or TensorFlow. Statistical modeling, A\/B testing, NLP, and stakeholder management."
   },
   {
-    "title": "Computer Vision Research Engineer",
-    "company": "Robotics Horizon",
-    "country": "Boston, MA (Onsite)",
-    "posted_at": "2026-09-17",
-    "description": "Develop real-time computer vision models using OpenCV, PyTorch, and C++. Image segmentation, object detection, and deep learning model quantization on Linux edge devices."
+    "title":"Computer Vision Research Engineer",
+    "company":"Robotics Horizon",
+    "country":"Boston, MA (Onsite)",
+    "salary":"$150,000 - $195,000 \/ year",
+    "posted_at":1789603200000,
+    "description":"Develop real-time computer vision models using OpenCV, PyTorch, and C++. 3+ years experience with object detection, image segmentation, and deep learning on Linux edge hardware. PhD or Master's Degree preferred."
   },
   {
-    "title": "Data Analyst",
-    "company": "Retail F",
-    "country": "Chicago, IL (Hybrid)",
-    "posted_at": "2026-09-15",
-    "description": "Analyze multi-channel sales data using SQL and Excel. Build executive dashboards in Tableau or Power BI. Communicate data insights to cross-functional stakeholders."
+    "title":"Lead Data Engineer (Spark, Kafka & AWS)",
+    "company":"Fintech D",
+    "country":"Remote",
+    "salary":"$175,000 - $225,000 \/ year",
+    "posted_at":1790121600000,
+    "description":"Build real-time data pipelines with Python, SQL, Apache Spark, and Apache Kafka on AWS. 6+ years of experience. Data modeling with dbt and Snowflake. Airflow orchestration and data lakehouse architecture with Apache Iceberg."
   },
   {
-    "title": "Junior Data Analyst Intern",
-    "company": "SaaS G",
-    "country": "Remote",
-    "posted_at": "2026-09-10",
-    "description": "Support the business analytics team with SQL queries, Excel data modeling, and Looker dashboards. Strong communication, analytical thinking, and collaboration required."
+    "title":"Cloud Lakehouse Architect (Databricks & BigQuery)",
+    "company":"Cloud Data Corp",
+    "country":"Seattle, WA (Hybrid)",
+    "salary":"$190,000 - $240,000 \/ year",
+    "posted_at":1790380800000,
+    "description":"Architect enterprise lakehouses using Databricks, Snowflake, Google BigQuery, and AWS Redshift. 7+ years of experience. PySpark pipeline optimization, dimensional modeling, and system design."
   },
   {
-    "title": "Business Intelligence Analyst",
-    "company": "Retail F",
-    "country": "Chicago, IL (Hybrid)",
-    "posted_at": "2026-09-08",
-    "description": "Build Power BI and Tableau reports connected to PostgreSQL and Snowflake data warehouses. Partner with marketing and finance stakeholders. Python automation is a plus."
+    "title":"Senior DevOps \/ SRE Engineer",
+    "company":"Cloud Co H",
+    "country":"Remote",
+    "salary":"$155,000 - $195,000 \/ year",
+    "posted_at":1789171200000,
+    "description":"Manage multi-cloud infrastructure as code using Terraform and Ansible on AWS. 4+ years experience. Kubernetes, Docker, GitHub Actions CI\/CD, Linux administration, Prometheus and Grafana monitoring."
   },
   {
-    "title": "Machine Learning Engineer",
-    "company": "AI Startup E",
-    "country": "San Francisco, CA (Hybrid)",
-    "posted_at": "2026-09-19",
-    "description": "Own production ML systems end-to-end: Python, scikit-learn, PyTorch, Apache Spark for feature pipelines. Deploy with Docker, Kubernetes, and Airflow orchestration on AWS."
+    "title":"Cloud Security & Compliance Engineer",
+    "company":"Cyber Guard",
+    "country":"Washington, DC (Hybrid)",
+    "salary":"$150,000 - $190,000 \/ year",
+    "posted_at":1789084800000,
+    "description":"Implement cloud security, OAuth\/OIDC authentication, and SOC 2 compliance across AWS and Azure. 4+ years in cybersecurity, penetration testing, and Kubernetes security hardening."
   },
   {
-    "title": "Senior Data Engineer",
-    "company": "Fintech D",
-    "country": "Remote",
-    "posted_at": "2026-09-23",
-    "description": "Build robust ETL pipelines with Python, SQL, Apache Spark, and Apache Airflow on AWS. Data modeling with dbt and Snowflake. Experience with Kafka real-time streaming."
+    "title":"Business Intelligence & Reporting Analyst",
+    "company":"Retail F",
+    "country":"Chicago, IL (Hybrid)",
+    "salary":"$95,000 - $125,000 \/ year",
+    "posted_at":1788825600000,
+    "description":"Build executive Tableau and Power BI dashboards connected to PostgreSQL and Snowflake data warehouses. 2+ years of experience with SQL data modeling and Excel pivot tables. Python for automation is a plus."
   },
   {
-    "title": "Lead Cloud Data Architect",
-    "company": "Cloud Data Corp",
-    "country": "Seattle, WA (Hybrid)",
-    "posted_at": "2026-09-26",
-    "description": "Architect enterprise lakehouses using Databricks, Snowflake, Google BigQuery, and AWS Redshift. Lead system design, data governance, and PySpark pipeline optimization."
+    "title":"Junior Data Analyst Intern",
+    "company":"SaaS G",
+    "country":"Remote",
+    "salary":"$60,000 - $80,000 \/ year",
+    "posted_at":1788998400000,
+    "description":"Support analytics team with SQL queries, Excel modeling, and Looker dashboards. 0-1 years experience. Strong communication, analytical thinking, and collaboration required. Bachelor's in progress."
   },
   {
-    "title": "DevOps / SRE Engineer",
-    "company": "Cloud Co H",
-    "country": "Remote",
-    "posted_at": "2026-09-12",
-    "description": "Manage CI/CD pipelines, Kubernetes clusters, and infrastructure as code using Terraform on AWS. Scripting in Python and Bash. Prometheus, Grafana monitoring, and system design."
+    "title":"Data Analyst (Product & Growth)",
+    "company":"Retail F",
+    "country":"Chicago, IL (Hybrid)",
+    "salary":"$105,000 - $135,000 \/ year",
+    "posted_at":1789430400000,
+    "description":"Analyze multi-channel sales data using SQL and Excel. Build Power BI dashboards and evaluate A\/B testing experiments. Communicate insights to non-technical stakeholders."
   },
   {
-    "title": "Platform Infrastructure Engineer",
-    "company": "Enterprise Tech X",
-    "country": "Austin, TX (Onsite)",
-    "posted_at": "2026-09-14",
-    "description": "Build automated infrastructure with Terraform, Ansible, Docker, and Kubernetes on Azure. Linux administration, GitHub Actions CI/CD, and site reliability engineering."
+    "title":"Machine Learning Engineer (Production Systems)",
+    "company":"AI Startup E",
+    "country":"San Francisco, CA (Hybrid)",
+    "salary":"$165,000 - $210,000 \/ year",
+    "posted_at":1789776000000,
+    "description":"Own production ML systems end-to-end: Python, scikit-learn, PyTorch, Apache Spark for feature pipelines. Deploy models with Docker, Kubernetes, and Airflow orchestration on AWS. 3+ years experience."
   },
   {
-    "title": "Backend Software Engineer (Java & Spring Boot)",
-    "company": "Banking Solutions",
-    "country": "Charlotte, NC (Hybrid)",
-    "posted_at": "2026-09-16",
-    "description": "Develop mission-critical banking services using Java, Spring Boot, PostgreSQL, and REST APIs. Microservices architecture, Docker containerization, and Agile Scrum delivery."
+    "title":"Senior Backend Engineer (Java & Spring Boot)",
+    "company":"Banking Solutions",
+    "country":"Charlotte, NC (Hybrid)",
+    "salary":"$145,000 - $185,000 \/ year",
+    "posted_at":1789516800000,
+    "description":"Develop core banking microservices using Java, Spring Boot, PostgreSQL, and REST APIs. 5+ years experience. Docker, Kafka, and Agile Scrum practices."
   },
   {
-    "title": "Backend Software Engineer (Python & Go)",
-    "company": "Tech Co I",
-    "country": "Seattle, WA (Remote)",
-    "posted_at": "2026-09-21",
-    "description": "Design and build high-throughput backend services in Python and Go. Microservices, Redis caching, PostgreSQL, and collaboration with frontend engineers using TypeScript."
+    "title":"Senior React Native Mobile Developer",
+    "company":"App Studio",
+    "country":"Remote",
+    "salary":"$140,000 - $180,000 \/ year",
+    "posted_at":1789257600000,
+    "description":"Build cross-platform iOS and Android mobile apps using React Native, TypeScript, Swift, and Kotlin. 4+ years mobile experience with REST APIs and CI\/CD."
   },
   {
-    "title": "Senior React Native / Mobile Engineer",
-    "company": "App Studio",
-    "country": "Remote",
-    "posted_at": "2026-09-13",
-    "description": "Build cross-platform mobile applications with React, TypeScript, Swift, and Kotlin. REST APIs integration, CI/CD with GitHub Actions, and Agile teamwork."
+    "title":"Flutter Mobile Application Engineer",
+    "company":"Fintech Global",
+    "country":"London, UK (Hybrid)",
+    "salary":"\u00a380,000 - \u00a3110,000 \/ year",
+    "posted_at":1789430400000,
+    "description":"Design financial mobile experiences using Flutter, Dart, and REST APIs. 3+ years of experience with mobile state management and automated testing."
   },
   {
-    "title": "Cloud Security & DevOps Architect",
-    "company": "Cyber Guard",
-    "country": "Washington, DC (Hybrid)",
-    "posted_at": "2026-09-11",
-    "description": "Lead cloud security architecture on AWS and Azure. Implement Terraform IaC, Kubernetes security policies, CI/CD pipeline scanning, and Linux systems hardening."
+    "title":"Full Stack Engineer (Vue & Django)",
+    "company":"Web Solutions Ltd",
+    "country":"Remote",
+    "salary":"$120,000 - $155,000 \/ year",
+    "posted_at":1788912000000,
+    "description":"Maintain web portal using Vue.js, Python, Django, and PostgreSQL. 3+ years experience with Docker and Git collaboration in distributed agile sprints."
   },
   {
-    "title": "AI Product Manager & Analytics Lead",
-    "company": "NextGen AI",
-    "country": "San Francisco, CA (Hybrid)",
-    "posted_at": "2026-09-20",
-    "description": "Lead product lifecycle for Generative AI applications. Stakeholder management, SQL analytics, Tableau metrics, and deep collaboration with engineering and ML teams."
+    "title":"Analytics Engineer (dbt & BigQuery)",
+    "company":"E-Commerce Titans",
+    "country":"Remote",
+    "salary":"$135,000 - $170,000 \/ year",
+    "posted_at":1790294400000,
+    "description":"Transform customer clickstream data using SQL, dbt, and Google BigQuery. 3+ years experience with dimensional data modeling and Looker analytics."
   },
   {
-    "title": "Data Science Associate",
-    "company": "HealthTech Systems",
-    "country": "Boston, MA (Onsite)",
-    "posted_at": "2026-09-18",
-    "description": "Develop statistical models and machine learning pipelines using Python, Pandas, NumPy, and scikit-learn. SQL data extraction and presentation of insights to stakeholders."
+    "title":"Site Reliability Engineer (SRE & Kubernetes)",
+    "company":"Global Streaming Corp",
+    "country":"Los Angeles, CA (Hybrid)",
+    "salary":"$160,000 - $205,000 \/ year",
+    "posted_at":1789776000000,
+    "description":"Ensure 99.99% uptime for global streaming systems. 4+ years experience. Kubernetes, AWS, Prometheus, Grafana, Linux, Python scripting, and incident response."
   },
   {
-    "title": "Full Stack Engineer (Vue & Django)",
-    "company": "Web Solutions Ltd",
-    "country": "Remote",
-    "posted_at": "2026-09-09",
-    "description": "Maintain web portal using Vue.js, Python, Django, and PostgreSQL. Docker development environments and Git collaboration across distributed agile sprints."
+    "title":"Data Science Associate (Healthcare ML)",
+    "company":"HealthTech Systems",
+    "country":"Boston, MA (Onsite)",
+    "salary":"$115,000 - $145,000 \/ year",
+    "posted_at":1789689600000,
+    "description":"Develop statistical models and machine learning pipelines using Python, Pandas, NumPy, and scikit-learn. 2+ years experience. SQL data extraction and stakeholder presentation."
   },
   {
-    "title": "Analytics Engineer (dbt & BigQuery)",
-    "company": "E-Commerce Titans",
-    "country": "Remote",
-    "posted_at": "2026-09-25",
-    "description": "Transform raw customer data using SQL, dbt, and Google BigQuery. Build dimensional models, Looker data models, and maintain data documentation."
+    "title":"Senior AI MLOps Platform Engineer",
+    "company":"NextGen AI",
+    "country":"San Francisco, CA (Hybrid)",
+    "salary":"$185,000 - $240,000 \/ year",
+    "posted_at":1789948800000,
+    "description":"Build automated MLOps pipelines with Kubeflow, MLflow, Docker, and Kubernetes on AWS. 5+ years experience. PyTorch model serving with FastAPI and model monitoring."
   },
   {
-    "title": "Site Reliability Engineer (SRE)",
-    "company": "Global Streaming Corp",
-    "country": "Los Angeles, CA (Hybrid)",
-    "posted_at": "2026-09-19",
-    "description": "Ensure 99.99% uptime for global streaming services. Kubernetes, AWS, Prometheus, Grafana, Linux, Python scripting, and incident response management."
+    "title":"Senior Cybersecurity Penetration Tester",
+    "company":"SecureNet",
+    "country":"Austin, TX (Onsite)",
+    "salary":"$140,000 - $180,000 \/ year",
+    "posted_at":1789516800000,
+    "description":"Conduct application and cloud penetration testing. 4+ years experience in cybersecurity, OAuth vulnerability scanning, network security, and Linux administration."
+  },
+  {
+    "title":"Full Stack Rails & React Developer",
+    "company":"E-Learning Hub",
+    "country":"Remote",
+    "salary":"$125,000 - $160,000 \/ year",
+    "posted_at":1789344000000,
+    "description":"Build interactive learning features using Ruby on Rails, React, TypeScript, and PostgreSQL. 3+ years experience with REST APIs and automated CI\/CD."
+  },
+  {
+    "title":"Staff Platform Engineer (Terraform & AWS)",
+    "company":"Enterprise Cloud",
+    "country":"Seattle, WA (Remote)",
+    "salary":"$195,000 - $250,000 \/ year",
+    "posted_at":1790208000000,
+    "description":"Lead multi-region AWS cloud platform engineering. 7+ years experience. Terraform IaC, Kubernetes, ArgoCD GitOps, Helm charts, and site reliability engineering."
+  },
+  {
+    "title":"Data Visualization & BI Developer",
+    "company":"Insights Corp",
+    "country":"New York, NY (Hybrid)",
+    "salary":"$110,000 - $140,000 \/ year",
+    "posted_at":1789862400000,
+    "description":"Deliver executive dashboards in Tableau and Metabase with PostgreSQL and Snowflake backends. 3+ years experience presenting data findings to C-level leaders."
+  },
+  {
+    "title":"Junior Backend Developer (Python & FastAPI)",
+    "company":"Fintech Seed",
+    "country":"Remote",
+    "salary":"$85,000 - $110,000 \/ year",
+    "posted_at":1789603200000,
+    "description":"Build high-performance REST APIs with Python, FastAPI, and PostgreSQL. 1-2 years experience. Git version control, Docker containers, and unit testing."
+  },
+  {
+    "title":"Lead NLP & Speech Scientist",
+    "company":"Voice Intelligence",
+    "country":"San Francisco, CA (Onsite)",
+    "salary":"$190,000 - $255,000 \/ year",
+    "posted_at":1790035200000,
+    "description":"Research and deploy speech and NLP models with PyTorch and Hugging Face. 5+ years experience. PhD in Computer Science or Electrical Engineering required."
+  },
+  {
+    "title":"Senior Data Architect (Snowflake & dbt)",
+    "company":"Data Scale Inc",
+    "country":"Denver, CO (Hybrid)",
+    "salary":"$170,000 - $220,000 \/ year",
+    "posted_at":1790121600000,
+    "description":"Architect enterprise data warehouse with Snowflake, dbt, SQL, and AWS. 6+ years experience in dimensional data modeling and ETL pipeline orchestration with Airflow."
+  },
+  {
+    "title":"Senior Frontend React & Next.js Developer",
+    "company":"Media Corp",
+    "country":"Remote",
+    "salary":"$140,000 - $175,000 \/ year",
+    "posted_at":1789084800000,
+    "description":"Build high-traffic consumer web portal using React, Next.js, TypeScript, and Tailwind CSS. 4+ years experience with web performance and SEO optimization."
+  },
+  {
+    "title":"Lead Systems Engineer (C++ & Linux)",
+    "company":"Telecom Core",
+    "country":"Dallas, TX (Onsite)",
+    "salary":"$165,000 - $210,000 \/ year",
+    "posted_at":1789430400000,
+    "description":"Low latency network packet processing in C++ on Linux. 6+ years experience with system design, multi-threading, socket programming, and memory optimization."
+  },
+  {
+    "title":"Staff AI Engineer (Fine-Tuning & Prompt Engineering)",
+    "company":"GenAI Systems",
+    "country":"Remote",
+    "salary":"$195,000 - $250,000 \/ year",
+    "posted_at":1790380800000,
+    "description":"Fine tune foundation models with LoRA\/QLoRA, Hugging Face, PyTorch, and LangChain. 5+ years experience with Vector Databases, RAG, and prompt engineering."
+  },
+  {
+    "title":"Junior QA Automation Engineer",
+    "company":"Fintech Seed",
+    "country":"Remote",
+    "salary":"$80,000 - $105,000 \/ year",
+    "posted_at":1789344000000,
+    "description":"Automate test suites using Python, Selenium, and Postman. 1-2 years experience. CI\/CD integration with GitHub Actions and Agile Scrum teamwork."
+  },
+  {
+    "title":"Senior Cloud Infrastructure Engineer (GCP & Terraform)",
+    "company":"Cloud Horizon",
+    "country":"Sunnyvale, CA (Hybrid)",
+    "salary":"$160,000 - $205,000 \/ year",
+    "posted_at":1789776000000,
+    "description":"Manage Google Cloud infrastructure with Terraform, Kubernetes (GKE), Docker, and Python automation. 4+ years experience in platform engineering and SRE."
+  },
+  {
+    "title":"Principal Big Data Engineer (Kafka & Flink)",
+    "company":"Stream Processing Labs",
+    "country":"Remote",
+    "salary":"$200,000 - $265,000 \/ year",
+    "posted_at":1790294400000,
+    "description":"Architect high-throughput real-time streaming pipelines with Apache Kafka, Apache Flink, PySpark, and AWS. 7+ years experience in distributed systems."
+  },
+  {
+    "title":"Senior BI Analyst (Power BI & SQL Server)",
+    "company":"Logistics Pro",
+    "country":"Atlanta, GA (Hybrid)",
+    "salary":"$105,000 - $135,000 \/ year",
+    "posted_at":1789171200000,
+    "description":"Build Power BI dashboards connected to SQL Server. 3+ years experience with DAX, data modeling, Excel reporting, and stakeholder communication."
+  },
+  {
+    "title":"Staff Full Stack Engineer (Node, React, AWS)",
+    "company":"Fintech Growth",
+    "country":"New York, NY (Hybrid)",
+    "salary":"$180,000 - $235,000 \/ year",
+    "posted_at":1790121600000,
+    "description":"Lead full stack architecture using TypeScript, React, Node.js, PostgreSQL, and AWS Lambda serverless. 6+ years experience in microservices and team leadership."
+  },
+  {
+    "title":"Data Scientist (Computer Vision & Deep Learning)",
+    "company":"Autonomous Auto",
+    "country":"Detroit, MI (Onsite)",
+    "salary":"$155,000 - $200,000 \/ year",
+    "posted_at":1789948800000,
+    "description":"Develop autonomous perception algorithms using PyTorch, OpenCV, Computer Vision, and Deep Learning. 3+ years experience with Linux and C++ deployment."
   }
 ]

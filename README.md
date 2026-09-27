@@ -1,28 +1,29 @@
-# 💼 Job Market Skill Demand Analyzer (v2.0)
+# 💼 Job Market Skill Demand Analyzer (v3.0 Enterprise Intelligence Edition)
 
-A powerful, beginner-friendly exploratory data analysis application for tech job postings. Analyzes skill demand, role-domain and seniority matrices, skill co-occurrence clustering, and candidate skill gap matching using deterministic taxonomy extraction.
+A comprehensive data analysis application for tech job postings. Analyzes skill demand, compensation benchmarks, role/seniority matrices, A/B cohort comparisons, and structured career roadmaps using deterministic multi-dimensional taxonomy matching.
 
 ---
 
 > [!NOTE]
 > **Data Honesty & Scope Notice:**  
 > This project is an exploratory **data analysis prototype**, **not a trained machine learning model**. It uses deterministic regex-based taxonomy matching.  
-> The bundled `sample_postings.json` dataset contains **25 illustrative demo postings** designed for testing workflow pipelines. **Demo results must not be cited as empirical findings about current job market conditions.**
+> The bundled `sample_postings.json` dataset contains **40 illustrative demo postings** with compensation ranges and experience requirements. **Demo results must not be cited as empirical findings about current job market conditions.**
 
 ---
 
-## 🌟 What's New in v2.0
+## 🌟 Evolution & Feature Matrix: v1.0 vs v2.0 vs v3.0
 
-| Feature Area | v1.0 Baseline | v2.0 Enhanced |
-| :--- | :--- | :--- |
-| **Taxonomy Vocabulary** | ~35 skills | **120+ curated tech skills** across 8 structured domains |
-| **Domain & Seniority Matrix** | None | Automatic classification of **Role Domains** and **Seniority Levels** with interactive cross-tab heatmaps |
-| **Candidate Skill Gap Matcher** | None | Input your skills profile -> calculates **Market Match Rate** & ranks **Highest-Impact Missing Skills** |
-| **Visual In-line Highlighting** | Plain code block | **In-line color-coded HTML highlighting** with tooltips for every matched skill in job descriptions |
-| **Co-occurrence Correlation** | Basic pair count | Added **Jaccard Correlation Similarity** scores and tech stack combinations |
-| **Taxonomy Management** | UI additions reset on reload | **Taxonomy Presets**, Export active taxonomy as JSON, and Upload custom taxonomy files |
-| **Executive Reporting** | Raw CSV exports | Automated **Executive Summary Markdown Report Generator** with one-click export |
-| **Ingestion Support** | JSON & basic CSV | JSON, CSV, TSV, XLSX, and **Direct Free-Text Paste** with automatic deduplication audit |
+| Feature Area | v1.0 Baseline | v2.0 Enhanced | v3.0 Enterprise Edition |
+| :--- | :--- | :--- | :--- |
+| **Taxonomy Scope** | ~35 skills | 120+ skills | **180+ curated skills across 10 specialized domains** (aligned with ESCO / O*NET) |
+| **Compensation Intelligence** | None | None | **Salary parser ($110k–$260k, hourly-to-annual normalization) & Top-Paying Skills Leaderboard** |
+| **Weighted Demand Scoring** | Raw counts only | Raw counts only | **Distinguishes Required vs Preferred skills with weighted demand scoring** |
+| **A/B Cohort Comparison Studio** | None | None | **Side-by-side cohort comparison** (Remote vs Onsite, Senior vs Junior, Domain A vs Domain B) with relative lift |
+| **Experience & Degree Extraction** | None | Basic Seniority | **Extracts Min Years of Experience & Education Levels** (Bachelor's, Master's, PhD, Bootcamp) |
+| **Structured Career Roadmap** | Raw missing count | Missing skills list | **4-Phase Structured Milestone Roadmap** (Foundation → Core Stack → Cloud/Scale → Leadership) |
+| **Interactive Postings Inspector** | Plain text box | HTML highlighted text | **In-line color-coded HTML highlighting with salary badges, experience chips, & domain tags** |
+| **Export & Reporting Center** | Basic CSV | Basic Markdown | **Presentation-ready Executive Summary Markdown report + Clean CSV/JSON export suite** |
+| **Bundled Demo Dataset** | 12 postings | 25 postings | **40 comprehensive postings** covering salaries, experience, degrees, and work models |
 
 ---
 
@@ -30,16 +31,16 @@ A powerful, beginner-friendly exploratory data analysis application for tech job
 
 ```text
 Job Market Analysis/
-├── app.py                     # Streamlit v2 application (7 analytics tabs)
-├── taxonomy.py                # 120+ skills taxonomy, categories, and preset bundles
-├── extract_analyze.py         # Multi-dimensional extraction, matrices, gap matching & highlighter
+├── app.py                     # Streamlit v3 application (9 analytical tabs)
+├── taxonomy.py                # 180+ skills taxonomy, 10 domains, ESCO alignments, and preset bundles
+├── extract_analyze.py         # Multi-dimensional extraction, salary intelligence, A/B cohorts, and roadmaps
 ├── ingest.py                  # Live API ingestion script (Techmap & JSearch)
-├── test_pipeline.py           # Automated test suite (v2)
+├── test_pipeline.py           # Automated test suite (v3)
 ├── requirements.txt           # Python package dependencies
 ├── .env.example               # Template for optional API credentials
 ├── .gitignore                 # Excludes secrets, temporary files, and caches
-├── sample_postings.json       # 25 bundled illustrative demo postings (JSON)
-├── sample_postings.csv        # 25 bundled illustrative demo postings (CSV)
+├── sample_postings.json       # 40 bundled illustrative demo postings (JSON)
+├── sample_postings.csv        # 40 bundled illustrative demo postings (CSV)
 ├── data/                      # Example datasets for testing
 │   ├── sample_postings.json
 │   ├── sample_postings.csv
@@ -87,15 +88,17 @@ Open your browser at `http://localhost:8501` to use the application.
 
 ---
 
-## 📊 Application Tour & Tabs
+## 📊 9 Application Tabs Overview
 
-1. **📊 Skill Demand Overview:** Interactive horizontal bar charts and ranked tables showing postings counts, market percentages, and category filters.
-2. **🏢 Role & Seniority Matrix:** Heatmaps and cross-tabulations showing how skill demand differs between *Data Science*, *Data Engineering*, *Backend*, *DevOps*, etc., and between *Junior* vs *Senior* roles.
-3. **🔗 Co-occurrence & Stack Clusters:** Discover which skills are frequently paired together (e.g. *Python + SQL*, *AWS + Kubernetes*) with Jaccard similarity metrics.
-4. **🎯 Candidate Skill Gap & Matcher:** Select or paste your current skillset to view your **50%+ and 80%+ Job Match Rates** and view the **top missing skills** that unlock the most jobs.
-5. **🔍 Interactive Postings Inspector:** Filter by skill, seniority, or role to view job cards with **in-line colored skill highlighting** inside the full job descriptions.
-6. **⚙️ Taxonomy Studio:** Switch taxonomy presets, add custom skills on the fly, export your taxonomy to JSON, or upload a custom taxonomy file.
-7. **📄 Executive Report:** Generates a ready-to-share Markdown executive summary report summarizing all findings.
+1. **📊 Skill Demand & Weighted Priority:** Market share percentage vs weighted demand score (accounting for Required vs Preferred mentions).
+2. **💰 Salary & Compensation Analytics:** Top-paying technical skills leaderboard, average salary per skill, and sample compensation distributions.
+3. **🏢 Role, Seniority & Experience Matrix:** Cross-tabulation heatmaps of skills across job domains, experience levels, and minimum degree requirements.
+4. **⚖️ A/B Cohort Comparison Studio:** Compare skill demand between two segments (e.g., Remote vs Hybrid, Senior vs Junior) with relative percentage lift.
+5. **🔗 Co-occurrence & Stack Clusters:** Discover which skills are frequently paired together (e.g. *Python + SQL*, *AWS + Kubernetes*) with Jaccard similarity metrics.
+6. **🎯 Career Roadmap & Candidate Matcher:** Input your current skillset to calculate **50%+ & 80%+ Job Match Coverage** and generate a **4-Phase Structured Learning Roadmap** toward your target domain.
+7. **🔍 Postings Inspector:** Search and drill down into job postings with **in-line colored skill highlighting**, salary badges, and experience chips.
+8. **⚙️ Taxonomy & ESCO Studio:** Switch taxonomy presets, add custom skills, export active taxonomy as JSON, or upload a custom taxonomy file.
+9. **📄 Executive & Export Center:** Generates a ready-to-share Executive Summary Markdown report and provides one-click downloads for all analytical tables.
 
 ---
 
@@ -105,6 +108,7 @@ The app accepts `.json`, `.csv`, `.tsv`, `.xlsx`, or raw text pastes. Common col
 - **Title:** `title`, `job_title`, `position`
 - **Company:** `company`, `employer_name`, `employer`
 - **Description:** `description`, `job_description`, `text`, `summary`
+- **Salary (optional):** `salary`, `compensation`, `salary_range`
 - **Tags (optional):** `skills_raw`, `skills`, `tags`
 - **Date / Location (optional):** `posted_at`, `date`, `country`, `location`
 
@@ -130,14 +134,6 @@ The app accepts `.json`, `.csv`, `.tsv`, `.xlsx`, or raw text pastes. Common col
 
 ```bash
 git add .
-git commit -m "feat: release v2.0 of job market skill demand analyzer"
+git commit -m "feat: release v3.0 enterprise intelligence edition"
 git push origin main
 ```
-
----
-
-## ⚠️ Known Limitations & Future Roadmap
-
-- **Keyword Matching vs. Deep Semantic Parsing:** The prototype does not distinguish between strict requirements and minor mentions without section headers.
-- **Taxonomy Breadth:** While expanded to 120+ skills, specialized niche domains can be further supplemented by uploading custom taxonomy JSON files.
-- **Sample Representativeness:** Small datasets reflect internal sample frequencies only and cannot be generalized to the entire macro economy.

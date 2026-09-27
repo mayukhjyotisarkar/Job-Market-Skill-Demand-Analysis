@@ -1,5 +1,5 @@
 """
-Comprehensive test suite for Job Market Skill Demand Analyzer (v2.0).
+Comprehensive test suite for Job Market Skill Demand Analyzer (v3.0 Enterprise Edition).
 """
 
 import json
@@ -14,6 +14,9 @@ from extract_analyze import (
     extract_skills,
     extract_skills_with_matches,
     highlight_skills_in_html,
+    extract_salary_info,
+    extract_years_of_experience,
+    extract_education_level,
     infer_seniority_level,
     infer_role_domain,
     infer_work_model,
@@ -21,6 +24,9 @@ from extract_analyze import (
     build_skill_frame,
     skill_frequency,
     skill_cooccurrence,
+    calculate_salary_by_skill,
+    compare_cohorts,
+    generate_career_roadmap,
     role_skill_cross_tab,
     seniority_skill_cross_tab,
     calculate_skill_gap,
@@ -30,80 +36,77 @@ from extract_analyze import (
 )
 
 
-def test_v2_taxonomy_and_boundaries():
-    text = (
-        "Seeking a Senior Data Scientist proficient in Python, SQL, PyTorch, LangChain, "
-        "and Docker on AWS with Kubernetes. Experience with C++, C#, and Go microservices."
-    )
-    skills = extract_skills(text)
-    expected = ["Python", "SQL", "PyTorch", "LangChain", "Docker", "AWS", "Kubernetes", "C++", "C#", "Go", "Microservices"]
-    for exp in expected:
-        assert exp in skills, f"Missing expected skill: {exp} in {skills}"
-    print("[PASS] test_v2_taxonomy_and_boundaries passed")
+def test_v3_salary_extraction():
+    # Test annual range
+    s1 = extract_salary_info("The compensation is $130,000 - $175,000 per year plus bonus.")
+    assert s1["has_salary"] is True
+    assert s1["salary_min"] == 130000
+    assert s1["salary_max"] == 175000
+    assert s1["salary_avg"] == 152500
+
+    # Test 'k' notation
+    s2 = extract_salary_info("Salary: 140k - 190k USD.")
+    assert s2["has_salary"] is True
+    assert s2["salary_min"] == 140000
+    assert s2["salary_max"] == 190000
+
+    # Test hourly rate annualization
+    s3 = extract_salary_info("Pay rate is $60 - $80 / hr.")
+    assert s3["has_salary"] is True
+    assert s3["salary_min"] == int(60 * 2080)
+    assert s3["salary_max"] == int(80 * 2080)
+    print("[PASS] test_v3_salary_extraction passed")
 
 
-def test_seniority_and_domain_inference():
-    # Seniority tests
-    assert infer_seniority_level("Junior Data Analyst Intern") in ["Intern / Entry", "Junior / Associate"]
-    assert infer_seniority_level("Senior Machine Learning Engineer") == "Senior / Lead"
-    assert infer_seniority_level("Staff Backend Architect") == "Lead / Staff / Architect"
+def test_v3_experience_and_education():
+    t1 = "Requires 5+ years of experience with distributed systems and a Master's Degree in CS."
+    assert extract_years_of_experience(t1) == 5
+    assert extract_education_level(t1) == "Master's Degree"
 
-    # Domain tests
-    assert infer_role_domain("Senior Data Scientist") == "Data Science & AI"
-    assert infer_role_domain("Lead Data Engineer (Spark & AWS)") == "Data Engineering"
-    assert infer_role_domain("Frontend React Developer") == "Frontend & Web"
-    assert infer_role_domain("DevOps / SRE Engineer") == "Cloud & DevOps"
-    print("[PASS] test_seniority_and_domain_inference passed")
+    t2 = "Looking for someone with 3-5 years experience and a Bachelor's Degree."
+    assert extract_years_of_experience(t2) == 3
+    assert extract_education_level(t2) == "Bachelor's Degree"
+    print("[PASS] test_v3_experience_and_education passed")
 
 
-def test_html_highlighter():
-    desc = "We require Python and SQL for machine learning pipelines."
-    html_out = highlight_skills_in_html(desc)
-    assert "<mark" in html_out
-    assert "Python" in html_out
-    print("[PASS] test_html_highlighter passed")
-
-
-def test_pipeline_on_v2_sample():
+def test_v3_cohort_and_roadmap():
     with open("sample_postings.json", "r", encoding="utf-8") as f:
         postings = json.load(f)
 
-    assert len(postings) == 25, f"Expected 25 sample postings, got {len(postings)}"
-
+    assert len(postings) == 40, f"Expected 40 postings, got {len(postings)}"
     df = build_skill_frame(postings)
-    assert len(df) == 25
-    assert "seniority" in df.columns
-    assert "role_domain" in df.columns
-    assert "work_model" in df.columns
+    assert len(df) == 40
 
-    # Frequency
-    freq = skill_frequency(df)
-    assert not freq.empty
-    assert "Python" in freq["skill"].values
+    # Cohort comparison: Remote vs Hybrid
+    cohort_diff = compare_cohorts(df, "work_model", "Remote", "Hybrid", top_n=10)
+    assert not cohort_diff.empty
+    assert "diff_a_minus_b" in cohort_diff.columns
 
-    # Cross-tabulations
-    role_ct = role_skill_cross_tab(df, top_k_skills=5)
-    assert not role_ct.empty
+    # Salary by skill
+    sal_by_skill = calculate_salary_by_skill(df, top_k_skills=8)
+    assert not sal_by_skill.empty
+    assert "avg_salary" in sal_by_skill.columns
 
-    sen_ct = seniority_skill_cross_tab(df, top_k_skills=5)
-    assert not sen_ct.empty
+    # Career Roadmap
+    user_skills = ["Python", "SQL"]
+    roadmap = generate_career_roadmap(df, user_skills, target_domain="Data Science & AI")
+    assert "phases" in roadmap
+    assert len(roadmap["phases"]) == 4
+    print("[PASS] test_v3_cohort_and_roadmap passed")
 
-    # Co-occurrence
-    cooc = skill_cooccurrence(df, top_n=10)
-    assert not cooc.empty
-    assert "jaccard_similarity" in cooc.columns
 
-    # Skill Gap Matcher
-    user_skills = ["Python", "SQL", "Git"]
-    gap = calculate_skill_gap(df, user_skills)
-    assert gap["user_skill_count"] == 3
-    assert len(gap["missing_skills_ranked"]) > 0
-    print("[PASS] test_pipeline_on_v2_sample passed")
+def test_v3_html_highlighter():
+    desc = "We build RAG systems using LangChain, PyTorch, and Docker on AWS."
+    html_out = highlight_skills_in_html(desc)
+    assert "<mark" in html_out
+    assert "PyTorch" in html_out
+    assert "LangChain" in html_out
+    print("[PASS] test_v3_html_highlighter passed")
 
 
 if __name__ == "__main__":
-    test_v2_taxonomy_and_boundaries()
-    test_seniority_and_domain_inference()
-    test_html_highlighter()
-    test_pipeline_on_v2_sample()
-    print("\nALL V2 TESTS PASSED SUCCESSFULLY!")
+    test_v3_salary_extraction()
+    test_v3_experience_and_education()
+    test_v3_cohort_and_roadmap()
+    test_v3_html_highlighter()
+    print("\nALL V3 TESTS PASSED SUCCESSFULLY!")

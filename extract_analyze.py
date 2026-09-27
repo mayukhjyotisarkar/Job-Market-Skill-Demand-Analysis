@@ -1,15 +1,17 @@
 """
-Enhanced Extraction & Multi-Dimensional Analysis Engine (v2).
+Comprehensive Multi-Dimensional Analytics Engine v3.0.
 
 Features:
-- Safe regex compilation & boundary lookaheads
-- Role Domain & Seniority level classification
-- Work Model (Remote / Hybrid / Onsite) detection
-- Requirement vs. Preferred skill segmentation
-- Role-Skill & Seniority-Skill cross-tabulation matrices
-- Skill Gap / Candidate Profile matcher
-- In-line HTML description highlighter
-- Co-occurrence matrix & Jaccard similarity scoring
+- Safe regex compilation & boundary lookaheads (180+ skills)
+- Salary & Compensation parser (Min, Max, Avg, Currency, Annualization)
+- Years of Experience & Education Requirement extractor
+- Section context segmentation (Required vs Preferred skills)
+- Weighted Demand Score calculation
+- A/B Cohort Comparison Engine (e.g. Remote vs Onsite, Senior vs Junior)
+- Structured Career Learning Roadmap generator
+- Salary by Skill Leaderboard calculator
+- In-line HTML description highlighter with tooltips
+- Co-occurrence with Jaccard correlation scoring
 """
 
 import re
@@ -27,10 +29,7 @@ from taxonomy import (
 
 
 def build_regex_pattern(term: str) -> str:
-    """
-    Build regex pattern with boundary assertions.
-    Handles tricky terms like 'c++', 'c#', 'r', 'go', 'ci/cd', '.net'.
-    """
+    """Build regex pattern with boundary assertions for complex tokens."""
     term = term.strip()
     if term.startswith(r"\b") or "(?<=" in term or "(?=" in term:
         return term
@@ -42,7 +41,7 @@ def build_regex_pattern(term: str) -> str:
 
 
 def compile_taxonomy(taxonomy_dict: Dict[str, List[str]]) -> Dict[str, re.Pattern]:
-    """Compile dictionary of canonical skill -> list of terms into case-insensitive regex patterns."""
+    """Compile dictionary of canonical skills into case-insensitive regex patterns."""
     compiled = {}
     for skill, terms in taxonomy_dict.items():
         if not terms:
@@ -91,9 +90,7 @@ def extract_skills_with_matches(
 
 
 def highlight_skills_in_html(text: str, compiled_taxonomy: Optional[Dict[str, re.Pattern]] = None) -> str:
-    """
-    Produce clean, safe HTML with color-coded highlighted badges for all detected skills in the description.
-    """
+    """Produce clean, safe HTML with color-coded highlighted badges for detected skills."""
     if not text or not isinstance(text, str):
         return "<p><em>No description text available.</em></p>"
 
@@ -109,30 +106,31 @@ def highlight_skills_in_html(text: str, compiled_taxonomy: Optional[Dict[str, re
             merged_spans.append(m)
             last_end = m["end"]
 
-    # Build HTML fragments
     html_parts = []
     cursor = 0
+    color_map = {
+        "Programming Languages": ("#DBEAFE", "#1E40AF"),
+        "Data Science & AI": ("#FCE7F3", "#9D174D"),
+        "Data Engineering": ("#FEF3C7", "#92400E"),
+        "Databases & Storage": ("#E0E7FF", "#3730A3"),
+        "Cloud & DevOps": ("#DCFCE7", "#166534"),
+        "Web & Frontend": ("#E0F2FE", "#0369A1"),
+        "Web & Backend": ("#CCFBF1", "#115E59"),
+        "Mobile Development": ("#FDE047", "#854D0E"),
+        "Cybersecurity & Security": ("#FEE2E2", "#991B1B"),
+        "BI & Analytics": ("#F3E8FF", "#6B21A8"),
+        "Practices & Soft Skills": ("#F1F5F9", "#334155"),
+    }
+
     for span in merged_spans:
         if span["start"] > cursor:
             html_parts.append(html.escape(text[cursor:span["start"]]))
-        
+
         matched_str = html.escape(text[span["start"]:span["end"]])
         skill_name = html.escape(span["skill"])
         cat = span["category"]
-        
-        # Category-based color tint
-        color_map = {
-            "Programming Languages": ("#DBEAFE", "#1E40AF"),
-            "Data Science & AI": ("#FCE7F3", "#9D174D"),
-            "Data Engineering": ("#FEF3C7", "#92400E"),
-            "Databases & Storage": ("#E0E7FF", "#3730A3"),
-            "Cloud & DevOps": ("#DCFCE7", "#166534"),
-            "Web & Backend": ("#E0F2FE", "#0369A1"),
-            "BI & Analytics": ("#F3E8FF", "#6B21A8"),
-            "Practices & Soft Skills": ("#F1F5F9", "#334155"),
-        }
         bg, text_col = color_map.get(cat, ("#FEF9C3", "#854D0E"))
-        
+
         tag_html = (
             f"<mark style='background-color:{bg}; color:{text_col}; font-weight:600; "
             f"padding:2px 6px; border-radius:4px; border:1px solid rgba(0,0,0,0.1);' "
@@ -147,10 +145,97 @@ def highlight_skills_in_html(text: str, compiled_taxonomy: Optional[Dict[str, re
     return f"<div style='line-height:1.7; white-space:pre-wrap; font-size:0.92rem;'>{''.join(html_parts)}</div>"
 
 
+def extract_salary_info(text: str) -> Dict[str, Any]:
+    """
+    Extract compensation range, currency, and period from posting text or metadata.
+    Handles forms like: $120,000 - $160,000, $120k - $150k, 80k-100k USD, £60,000 - £80,000, $50-70/hr.
+    Annualizes hourly wages assuming 2,080 work hours/year.
+    """
+    if not text:
+        return {"has_salary": False, "salary_min": None, "salary_max": None, "salary_avg": None, "currency": "$", "period": "yearly"}
+
+    # Pattern for ranges with $ or £ or €
+    # e.g., $120k - $160k, $120,000 - $160,000, 120,000 - 150,000 USD, $50 - $80 / hr
+    pat_range = re.search(
+        r"([$£€]?)\s*(\d{2,3}(?:,\d{3})*|\d{2,3})\s*(?:k|K)?\s*(?:-|to|–)\s*([$£€]?)\s*(\d{2,3}(?:,\d{3})*|\d{2,3})\s*(k|K)?\s*(usd|eur|gbp)?\s*(?:/|\s*per\s*)?\s*(yr|year|annual|annually|hr|hour|hourly)?",
+        text,
+        re.IGNORECASE,
+    )
+
+    if pat_range:
+        curr_symbol = pat_range.group(1) or pat_range.group(3) or "$"
+        raw_min = pat_range.group(2).replace(",", "")
+        raw_max = pat_range.group(4).replace(",", "")
+        has_k = bool(pat_range.group(5) or "k" in pat_range.group(0).lower())
+        period_str = (pat_range.group(7) or "").lower()
+        is_hourly = any(h in period_str or "hr" in pat_range.group(0).lower() or "hour" in pat_range.group(0).lower() for h in ["hr", "hour", "hourly"])
+
+        try:
+            val_min = float(raw_min)
+            val_max = float(raw_max)
+
+            # Check if numbers are in thousands (e.g. 120 means 120k if > 25 and not hourly)
+            if not is_hourly:
+                if has_k or val_min < 1000:
+                    val_min = val_min * 1000 if val_min < 1000 else val_min
+                    val_max = val_max * 1000 if val_max < 1000 else val_max
+            else:
+                # Annualize hourly rate
+                val_min = val_min * 2080
+                val_max = val_max * 2080
+
+            if 20000 <= val_min <= 600000 and 20000 <= val_max <= 600000 and val_min <= val_max:
+                avg_val = round((val_min + val_max) / 2.0, 0)
+                return {
+                    "has_salary": True,
+                    "salary_min": int(val_min),
+                    "salary_max": int(val_max),
+                    "salary_avg": int(avg_val),
+                    "currency": curr_symbol if curr_symbol in ["$", "£", "€"] else "$",
+                    "period": "yearly",
+                }
+        except (ValueError, TypeError):
+            pass
+
+    return {"has_salary": False, "salary_min": None, "salary_max": None, "salary_avg": None, "currency": "$", "period": "yearly"}
+
+
+def extract_years_of_experience(text: str) -> Optional[int]:
+    """Extract minimum years of experience required from posting text."""
+    if not text:
+        return None
+
+    # Matches: 3+ years, 5-7 years, minimum 2 years, 4+ yrs
+    m = re.search(r"(\d+)(?:\s*(?:-|to|–|\+)\s*\d+)?\s*(?:\+)?\s*(?:years?|yrs?)(?:\s+of\s+experience)?", text, re.IGNORECASE)
+    if m:
+        try:
+            val = int(m.group(1))
+            if 0 <= val <= 20:
+                return val
+        except ValueError:
+            pass
+    return None
+
+
+def extract_education_level(text: str) -> str:
+    """Extract minimum degree qualification requirement."""
+    if not text:
+        return "Not Specified"
+    t = text.lower()
+    if re.search(r"\b(ph\.?d\.?|doctorate)\b", t):
+        return "PhD / Doctorate"
+    if re.search(r"\b(master'?s|ms|m\.s\.|msc|m\.sc\.)\b", t):
+        return "Master's Degree"
+    if re.search(r"\b(bachelor'?s|bs|b\.s\.|bsc|b\.sc\.|b\.tech|undergraduate)\b", t):
+        return "Bachelor's Degree"
+    if re.search(r"\b(bootcamp|self-taught|equivalent experience)\b", t):
+        return "Bootcamp / Self-Taught"
+    return "Not Specified"
+
+
 def infer_seniority_level(title: str, description: str = "") -> str:
-    """Infer experience/seniority level from job title and description text."""
+    """Infer experience/seniority level from job title and description."""
     combined = f"{title} {description}".lower()
-    
     if re.search(r"\b(intern|internship|co-op|apprentice|student)\b", combined):
         return "Intern / Entry"
     if re.search(r"\b(junior|jr\.?|associate|entry level|graduate|new grad|lvl 1|level 1)\b", combined):
@@ -159,14 +244,13 @@ def infer_seniority_level(title: str, description: str = "") -> str:
         return "Lead / Staff / Architect"
     if re.search(r"\b(senior|sr\.?|lead|tech lead|manager)\b", combined):
         return "Senior / Lead"
-    return "Mid-Level / Unspecified"
+    return "Mid-Level"
 
 
 def infer_role_domain(title: str) -> str:
-    """Classify posting into a technical role domain based on title keywords."""
+    """Classify posting into a technical role domain."""
     t = title.lower()
-    
-    if re.search(r"\b(data scientist|data science|machine learning|ml engineer|deep learning|ai engineer|ai researcher|nlp engineer|computer vision|llm)\b", t):
+    if re.search(r"\b(data scientist|data science|machine learning|ml engineer|deep learning|ai engineer|ai researcher|nlp engineer|computer vision|llm|genai)\b", t):
         return "Data Science & AI"
     if re.search(r"\b(data engineer|big data|etl|analytics engineer|data architect|database admin|dba)\b", t):
         return "Data Engineering"
@@ -174,17 +258,21 @@ def infer_role_domain(title: str) -> str:
         return "BI & Analytics"
     if re.search(r"\b(devops|sre|site reliability|cloud engineer|platform engineer|infrastructure|sysadmin|systems engineer)\b", t):
         return "Cloud & DevOps"
-    if re.search(r"\b(frontend|front-end|ui engineer|ui developer|web developer|react developer|angular developer)\b", t):
+    if re.search(r"\b(security|cybersecurity|infosec|appsec|soc analyst|penetration)\b", t):
+        return "Cybersecurity"
+    if re.search(r"\b(mobile|ios|android|flutter|react native|swift developer|kotlin developer)\b", t):
+        return "Mobile Development"
+    if re.search(r"\b(frontend|front-end|ui engineer|ui developer|web developer|react developer|angular developer|vue developer)\b", t):
         return "Frontend & Web"
-    if re.search(r"\b(backend|back-end|api engineer|java developer|python developer|golang developer|c\+\+ developer)\b", t):
+    if re.search(r"\b(backend|back-end|api engineer|java developer|python developer|golang developer|c\+\+ developer|rust developer)\b", t):
         return "Backend & Systems"
     if re.search(r"\b(full stack|full-stack|software engineer|software developer|swe|application engineer)\b", t):
         return "Full Stack / Software Eng"
-    return "Other / General Tech"
+    return "Other Tech Roles"
 
 
 def infer_work_model(text: str) -> str:
-    """Infer work model (Remote, Hybrid, Onsite) from posting metadata/text."""
+    """Infer work model (Remote, Hybrid, Onsite)."""
     t = text.lower()
     if re.search(r"\b(remote|work from home|telecommute|100% remote|anywhere)\b", t):
         return "Remote"
@@ -196,9 +284,7 @@ def infer_work_model(text: str) -> str:
 
 
 def segment_requirements_vs_preferred(text: str, compiled_taxonomy: Optional[Dict[str, re.Pattern]] = None) -> Tuple[List[str], List[str]]:
-    """
-    Heuristically segment job description into Must-Have (Required) vs Nice-to-Have (Preferred) skills.
-    """
+    """Segment job description into Must-Have (Required) vs Nice-to-Have (Preferred) skills."""
     if not text:
         return [], []
 
@@ -209,11 +295,11 @@ def segment_requirements_vs_preferred(text: str, compiled_taxonomy: Optional[Dic
 
     for line in lines:
         lower_line = line.lower()
-        if re.search(r"\b(preferred|bonus|nice to have|plus|desired|optional|advantageous)\b", lower_line):
+        if re.search(r"\b(preferred|bonus|nice to have|plus|desired|optional|advantageous|great to have)\b", lower_line):
             current_section = "preferred"
-        elif re.search(r"\b(requirements|qualifications|must have|required|what you bring|experience needed|minimum)\b", lower_line):
+        elif re.search(r"\b(requirements|qualifications|must have|required|what you bring|experience needed|minimum requirements)\b", lower_line):
             current_section = "required"
-        
+
         if current_section == "preferred":
             preferred_text.append(line)
         else:
@@ -221,18 +307,17 @@ def segment_requirements_vs_preferred(text: str, compiled_taxonomy: Optional[Dic
 
     req_skills = extract_skills("\n".join(required_text), compiled_taxonomy)
     pref_skills = extract_skills("\n".join(preferred_text), compiled_taxonomy)
-    # Deduplicate pref from req
     pref_only = [s for s in pref_skills if s not in req_skills]
     return req_skills, pref_only
 
 
 def normalize_posting(p: Dict[str, Any]) -> Dict[str, Any]:
-    """Standardize field names across arbitrary JSON/CSV input schemas."""
+    """Standardize field names across arbitrary input schemas."""
     title = p.get("title") or p.get("job_title") or p.get("position") or "Untitled Position"
     company = p.get("company") or p.get("employer_name") or p.get("employer") or p.get("company_name") or "Unknown Company"
     posted_at = p.get("posted_at") or p.get("job_posted_at_datetime_utc") or p.get("dateCreated") or p.get("date") or "N/A"
     country = p.get("country") or p.get("job_country") or p.get("countryCode") or p.get("location") or "N/A"
-    
+
     description = p.get("description") or p.get("job_description") or p.get("summary") or p.get("text") or ""
     if not isinstance(description, str):
         description = "" if pd.isna(description) else str(description)
@@ -244,6 +329,9 @@ def normalize_posting(p: Dict[str, Any]) -> Dict[str, Any]:
     elif isinstance(skills_raw, str) and skills_raw.strip():
         parsed_skills_raw = [s.strip() for s in re.split(r"[,;|]", skills_raw) if s.strip()]
 
+    # Salary extraction directly if fields present
+    salary_direct = p.get("salary") or p.get("compensation") or p.get("salary_range")
+
     return {
         "title": str(title).strip(),
         "company": str(company).strip(),
@@ -251,6 +339,7 @@ def normalize_posting(p: Dict[str, Any]) -> Dict[str, Any]:
         "country": str(country).strip(),
         "description": description.strip(),
         "skills_raw": parsed_skills_raw,
+        "salary_field": str(salary_direct) if salary_direct else "",
     }
 
 
@@ -278,7 +367,7 @@ def build_skill_frame(
     taxonomy_dict: Optional[Dict[str, List[str]]] = None,
     skill_source_mode: str = "auto",
 ) -> pd.DataFrame:
-    """Build enriched DataFrame containing skills, seniority, domain, work model, and segmented requirements."""
+    """Build enriched DataFrame containing skills, salary, experience, education, seniority, and domain."""
     compiled = compile_taxonomy(taxonomy_dict) if taxonomy_dict is not None else _DEFAULT_COMPILED
     rows = []
 
@@ -322,6 +411,12 @@ def build_skill_frame(
         domain = infer_role_domain(p["title"])
         work_model = infer_work_model(f"{p['title']} {p['country']} {p['description']}")
 
+        # Rich dimension extraction
+        combined_text = f"{p['salary_field']} {p['description']}"
+        sal_info = extract_salary_info(combined_text)
+        exp_years = extract_years_of_experience(p["description"])
+        education = extract_education_level(p["description"])
+
         rows.append({
             "posting_id": idx + 1,
             "title": p["title"],
@@ -331,6 +426,13 @@ def build_skill_frame(
             "seniority": seniority,
             "role_domain": domain,
             "work_model": work_model,
+            "has_salary": sal_info["has_salary"],
+            "salary_min": sal_info["salary_min"],
+            "salary_max": sal_info["salary_max"],
+            "salary_avg": sal_info["salary_avg"],
+            "salary_currency": sal_info["currency"],
+            "min_years_experience": exp_years,
+            "education_level": education,
             "description": p["description"],
             "skills_raw": p["skills_raw"],
             "skills_extracted": extracted,
@@ -347,20 +449,34 @@ def build_skill_frame(
 
 
 def skill_frequency(df: pd.DataFrame) -> pd.DataFrame:
-    """Calculate skill frequencies, percentages, and category metadata."""
+    """Calculate raw frequency and weighted demand score (Required = 1.0, Preferred = 0.5)."""
     if df.empty:
-        return pd.DataFrame(columns=["rank", "skill", "category", "postings_mentioning", "pct_of_postings"])
+        return pd.DataFrame(columns=["rank", "skill", "category", "postings_mentioning", "pct_of_postings", "weighted_score"])
 
     all_skills = list(itertools.chain.from_iterable(df["skills"]))
     if not all_skills:
-        return pd.DataFrame(columns=["rank", "skill", "category", "postings_mentioning", "pct_of_postings"])
+        return pd.DataFrame(columns=["rank", "skill", "category", "postings_mentioning", "pct_of_postings", "weighted_score"])
 
     counts = Counter(all_skills)
     total_postings = len(df)
 
+    # Weighted calculation
+    weighted_scores = Counter()
+    for _, row in df.iterrows():
+        reqs = set(row.get("skills_required", []))
+        prefs = set(row.get("skills_preferred", []))
+        for s in row["skills"]:
+            if s in reqs:
+                weighted_scores[s] += 1.0
+            elif s in prefs:
+                weighted_scores[s] += 0.5
+            else:
+                weighted_scores[s] += 0.8  # neutral/unsegmented mention
+
     freq_rows = []
     for rank, (skill, count) in enumerate(counts.most_common(), start=1):
         pct = round(100.0 * count / total_postings, 1)
+        w_score = round(weighted_scores[skill], 1)
         cat = get_category_for_skill(skill)
         freq_rows.append({
             "rank": rank,
@@ -368,13 +484,14 @@ def skill_frequency(df: pd.DataFrame) -> pd.DataFrame:
             "category": cat,
             "postings_mentioning": count,
             "pct_of_postings": pct,
+            "weighted_score": w_score,
         })
 
     return pd.DataFrame(freq_rows)
 
 
 def skill_cooccurrence(df: pd.DataFrame, top_n: int = 15, min_cooc: int = 1) -> pd.DataFrame:
-    """Calculate co-occurrences and Jaccard similarity between top skills."""
+    """Calculate co-occurrences and Jaccard correlation between top skills."""
     if df.empty or len(df) < 2:
         return pd.DataFrame(columns=["skill_a", "skill_b", "category_a", "category_b", "co_occurrences", "pct_of_postings", "jaccard_similarity"])
 
@@ -397,7 +514,6 @@ def skill_cooccurrence(df: pd.DataFrame, top_n: int = 15, min_cooc: int = 1) -> 
     for (a, b), count in pair_counts.most_common():
         if count >= min_cooc:
             pct = round(100.0 * count / total_postings, 1)
-            # Jaccard = Intersection / Union = count / (count_a + count_b - count)
             union = individual_counts[a] + individual_counts[b] - count
             jaccard = round(count / union, 2) if union > 0 else 0.0
 
@@ -412,6 +528,144 @@ def skill_cooccurrence(df: pd.DataFrame, top_n: int = 15, min_cooc: int = 1) -> 
             })
 
     return pd.DataFrame(cooc_rows)
+
+
+def calculate_salary_by_skill(df: pd.DataFrame, top_k_skills: int = 12) -> pd.DataFrame:
+    """Calculate average and median annual compensation for top skills."""
+    df_sal = df[df["has_salary"] & df["salary_avg"].notna()].copy()
+    if df_sal.empty:
+        return pd.DataFrame(columns=["skill", "category", "postings_with_salary", "avg_salary", "min_salary", "max_salary"])
+
+    freq = skill_frequency(df)
+    if freq.empty:
+        return pd.DataFrame()
+
+    top_skills = freq.head(top_k_skills)["skill"].tolist()
+    skill_salaries = []
+
+    for s in top_skills:
+        matching = df_sal[df_sal["skills"].apply(lambda sl: s in sl)]
+        if len(matching) >= 1:
+            avg_s = int(matching["salary_avg"].mean())
+            min_s = int(matching["salary_min"].min())
+            max_s = int(matching["salary_max"].max())
+            skill_salaries.append({
+                "skill": s,
+                "category": get_category_for_skill(s),
+                "postings_with_salary": len(matching),
+                "avg_salary": avg_s,
+                "min_salary": min_s,
+                "max_salary": max_s,
+            })
+
+    res = pd.DataFrame(skill_salaries)
+    if not res.empty:
+        res = res.sort_values(by="avg_salary", ascending=False)
+    return res
+
+
+def compare_cohorts(
+    df: pd.DataFrame,
+    cohort_col: str,
+    cohort_a_val: str,
+    cohort_b_val: str,
+    top_n: int = 12,
+) -> pd.DataFrame:
+    """
+    Compare skill demand between two cohorts (e.g., Remote vs Onsite, Senior vs Junior).
+    Returns comparative prevalence and relative percentage difference.
+    """
+    if df.empty or cohort_col not in df.columns:
+        return pd.DataFrame()
+
+    df_a = df[df[cohort_col] == cohort_a_val]
+    df_b = df[df[cohort_col] == cohort_b_val]
+
+    if df_a.empty or df_b.empty:
+        return pd.DataFrame()
+
+    freq_a = skill_frequency(df_a).set_index("skill")["pct_of_postings"].to_dict()
+    freq_b = skill_frequency(df_b).set_index("skill")["pct_of_postings"].to_dict()
+
+    all_compared_skills = sorted(list(set(list(freq_a.keys()) + list(freq_b.keys()))))
+    comparison_rows = []
+
+    for s in all_compared_skills:
+        pct_a = freq_a.get(s, 0.0)
+        pct_b = freq_b.get(s, 0.0)
+        diff = round(pct_a - pct_b, 1)
+        # Skip if both are very low
+        if pct_a >= 5.0 or pct_b >= 5.0:
+            comparison_rows.append({
+                "skill": s,
+                "category": get_category_for_skill(s),
+                f"pct_{cohort_a_val}": pct_a,
+                f"pct_{cohort_b_val}": pct_b,
+                "diff_a_minus_b": diff,
+                "total_demand": pct_a + pct_b,
+            })
+
+    res = pd.DataFrame(comparison_rows)
+    if not res.empty:
+        res = res.sort_values(by="total_demand", ascending=False).head(top_n)
+    return res
+
+
+def generate_career_roadmap(
+    df: pd.DataFrame,
+    current_skills: List[str],
+    target_domain: Optional[str] = None,
+) -> Dict[str, Any]:
+    """
+    Generate a 4-Phase Structured Learning Roadmap to transition or advance into a target domain.
+    Prioritizes skills by market frequency and dependency hierarchy.
+    """
+    target_df = df if not target_domain or target_domain == "All Roles" else df[df["role_domain"] == target_domain]
+    if target_df.empty:
+        target_df = df
+
+    freq = skill_frequency(target_df)
+    user_set = set(s.lower().strip() for s in current_skills)
+
+    missing_skills = []
+    for _, r in freq.iterrows():
+        if r["skill"].lower() not in user_set:
+            missing_skills.append({
+                "skill": r["skill"],
+                "category": r["category"],
+                "pct_of_jobs": r["pct_of_postings"],
+                "postings_count": r["postings_mentioning"],
+            })
+
+    # Group into 4 Structured Milestones
+    phase1 = []  # Core Languages & Foundation
+    phase2 = []  # Primary Frameworks & Engineering
+    phase3 = []  # Cloud, Scale & MLOps/Data Infra
+    phase4 = []  # Advanced Systems & Leadership
+
+    for s in missing_skills[:16]:
+        cat = s["category"]
+        if cat in ["Programming Languages", "Databases & Storage"]:
+            phase1.append(s)
+        elif cat in ["Data Science & AI", "Web & Frontend", "Web & Backend", "BI & Analytics"]:
+            phase2.append(s)
+        elif cat in ["Data Engineering", "Cloud & DevOps", "Mobile Development"]:
+            phase3.append(s)
+        else:
+            phase4.append(s)
+
+    return {
+        "target_domain": target_domain or "General Tech",
+        "postings_evaluated": len(target_df),
+        "user_skill_count": len(current_skills),
+        "missing_count": len(missing_skills),
+        "phases": {
+            "Phase 1: Core Foundation & Data Layer": phase1,
+            "Phase 2: Primary Frameworks & Core Stack": phase2,
+            "Phase 3: Cloud, Scale & Data Infrastructure": phase3,
+            "Phase 4: Advanced Systems & Leadership Practices": phase4,
+        },
+    }
 
 
 def role_skill_cross_tab(df: pd.DataFrame, top_k_skills: int = 10) -> pd.DataFrame:
@@ -436,8 +690,7 @@ def role_skill_cross_tab(df: pd.DataFrame, top_k_skills: int = 10) -> pd.DataFra
         return pd.DataFrame()
 
     temp_df = pd.DataFrame(records)
-    ct = pd.crosstab(temp_df["role_domain"], temp_df["skill"])
-    return ct
+    return pd.crosstab(temp_df["role_domain"], temp_df["skill"])
 
 
 def seniority_skill_cross_tab(df: pd.DataFrame, top_k_skills: int = 10) -> pd.DataFrame:
@@ -462,17 +715,13 @@ def seniority_skill_cross_tab(df: pd.DataFrame, top_k_skills: int = 10) -> pd.Da
         return pd.DataFrame()
 
     temp_df = pd.DataFrame(records)
-    ct = pd.crosstab(temp_df["seniority"], temp_df["skill"])
-    return ct
+    return pd.crosstab(temp_df["seniority"], temp_df["skill"])
 
 
 def calculate_skill_gap(
     df: pd.DataFrame, user_skills: List[str]
 ) -> Dict[str, Any]:
-    """
-    Compare candidate's skill profile against the dataset.
-    Returns match metrics, qualified postings percentage, and high-impact missing skills.
-    """
+    """Calculate profile match rates and ROI ranking of missing skills."""
     if df.empty or not user_skills:
         return {
             "total_postings": len(df),
@@ -492,7 +741,7 @@ def calculate_skill_gap(
         job_skills = row["skills"]
         if not job_skills:
             continue
-        
+
         job_skills_lower = [s.lower() for s in job_skills]
         shared = [s for s in job_skills_lower if s in user_skills_set]
         coverage = len(shared) / len(job_skills)
@@ -533,6 +782,7 @@ def filter_postings(
     selected_seniorities: Optional[List[str]] = None,
     selected_domains: Optional[List[str]] = None,
     selected_work_models: Optional[List[str]] = None,
+    selected_educations: Optional[List[str]] = None,
 ) -> pd.DataFrame:
     """Multi-dimensional filtering for postings DataFrame."""
     if df.empty:
@@ -555,6 +805,9 @@ def filter_postings(
     if selected_work_models:
         filtered = filtered[filtered["work_model"].isin(selected_work_models)]
 
+    if selected_educations:
+        filtered = filtered[filtered["education_level"].isin(selected_educations)]
+
     if keyword and keyword.strip():
         kw = keyword.strip().lower()
         title_match = filtered["title"].str.lower().str.contains(kw, na=False)
@@ -566,14 +819,14 @@ def filter_postings(
 
 
 def get_postings_for_skill(df: pd.DataFrame, skill_name: str) -> pd.DataFrame:
-    """Retrieve postings matching a specific skill."""
+    """Retrieve postings containing a specific skill."""
     if df.empty:
         return df
     return df[df["skills"].apply(lambda s_list: skill_name in s_list)]
 
 
 def get_postings_for_pair(df: pd.DataFrame, skill_a: str, skill_b: str) -> pd.DataFrame:
-    """Retrieve postings matching both skill_a and skill_b."""
+    """Retrieve postings containing both skill_a and skill_b."""
     if df.empty:
         return df
     return df[df["skills"].apply(lambda s_list: (skill_a in s_list) and (skill_b in s_list))]
