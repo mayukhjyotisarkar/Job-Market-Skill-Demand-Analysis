@@ -1,0 +1,13 @@
+title,company,posted_at,description
+"Software Engineer, University Grad","Tech Co A","2026-09-20","Looking for a new grad to build software using C, C++, Java or Python, with experience in Unix/Linux, distributed systems and machine learning, contributing to natural language processing projects."
+"Senior Software Engineer (Python)","Tech Co B","2026-09-18","Build and maintain scalable Python microservices, contribute to API design, deploy on AWS with Kubernetes, follow modern DevOps and CI/CD practices, on-call rotation."
+"Sr. Software Engineer - Python","Tech Co C","2026-09-05","Mid level engineers needed comfortable with Git and Python, working across branches with a distributed team, agile delivery."
+"Data Scientist","Fintech D","2026-09-22","Seeking a data scientist strong in Python and SQL, with machine learning and deep learning experience (PyTorch or TensorFlow), NLP a plus, comfortable presenting findings to stakeholders."
+"Data Scientist - LLM Applications","AI Startup E","2026-09-24","Build RAG pipelines with LangChain, fine tune LLMs, strong Python and statistics background, experience with vector databases and cloud deployment on GCP or Azure."
+"Data Analyst","Retail F","2026-09-15","Analyze sales data using SQL and Excel, build dashboards in Tableau or Power BI, communicate insights clearly to non-technical stakeholders, collaborate cross-functionally."
+"Data Analyst Intern","SaaS G","2026-09-10","Support the analytics team with SQL queries, Excel modeling, and Looker dashboards; strong communication and problem solving skills required."
+"Machine Learning Engineer","AI Startup E","2026-09-19","Own production ML systems end to end: Python, scikit-learn, PyTorch, Apache Spark for feature pipelines, Docker and Kubernetes for deployment, Airflow for orchestration."
+"DevOps Engineer","Cloud Co H","2026-09-12","Manage CI/CD pipelines, Kubernetes clusters and infrastructure on AWS, scripting in Python, strong Git and system design fundamentals."
+"Business Intelligence Analyst","Retail F","2026-09-08","Build Power BI and Tableau reports from SQL Server data, partner with stakeholders across departments, basic Python for automation a plus."
+"Backend Software Engineer (Python)","Tech Co I","2026-09-21","Design and build backend services in Python and Go, own microservices in production, collaborate with frontend engineers using JavaScript and TypeScript."
+"Data Engineer","Fintech D","2026-09-23","Build data pipelines with Python, SQL, Apache Spark and Airflow on AWS; strong understanding of distributed systems and data modeling."

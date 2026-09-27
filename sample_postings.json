@@ -1,0 +1,74 @@
+[
+  {
+    "title": "Software Engineer, University Grad",
+    "company": "Tech Co A",
+    "posted_at": "2026-09-20",
+    "description": "Looking for a new grad to build software using C, C++, Java or Python, with experience in Unix/Linux, distributed systems and machine learning, contributing to natural language processing projects."
+  },
+  {
+    "title": "Senior Software Engineer (Python)",
+    "company": "Tech Co B",
+    "posted_at": "2026-09-18",
+    "description": "Build and maintain scalable Python microservices, contribute to API design, deploy on AWS with Kubernetes, follow modern DevOps and CI/CD practices, on-call rotation."
+  },
+  {
+    "title": "Sr. Software Engineer - Python",
+    "company": "Tech Co C",
+    "posted_at": "2026-09-05",
+    "description": "Mid level engineers needed comfortable with Git and Python, working across branches with a distributed team, agile delivery."
+  },
+  {
+    "title": "Data Scientist",
+    "company": "Fintech D",
+    "posted_at": "2026-09-22",
+    "description": "Seeking a data scientist strong in Python and SQL, with machine learning and deep learning experience (PyTorch or TensorFlow), NLP a plus, comfortable presenting findings to stakeholders."
+  },
+  {
+    "title": "Data Scientist - LLM Applications",
+    "company": "AI Startup E",
+    "posted_at": "2026-09-24",
+    "description": "Build RAG pipelines with LangChain, fine tune LLMs, strong Python and statistics background, experience with vector databases and cloud deployment on GCP or Azure."
+  },
+  {
+    "title": "Data Analyst",
+    "company": "Retail F",
+    "posted_at": "2026-09-15",
+    "description": "Analyze sales data using SQL and Excel, build dashboards in Tableau or Power BI, communicate insights clearly to non-technical stakeholders, collaborate cross-functionally."
+  },
+  {
+    "title": "Data Analyst Intern",
+    "company": "SaaS G",
+    "posted_at": "2026-09-10",
+    "description": "Support the analytics team with SQL queries, Excel modeling, and Looker dashboards; strong communication and problem solving skills required."
+  },
+  {
+    "title": "Machine Learning Engineer",
+    "company": "AI Startup E",
+    "posted_at": "2026-09-19",
+    "description": "Own production ML systems end to end: Python, scikit-learn, PyTorch, Apache Spark for feature pipelines, Docker and Kubernetes for deployment, Airflow for orchestration."
+  },
+  {
+    "title": "DevOps Engineer",
+    "company": "Cloud Co H",
+    "posted_at": "2026-09-12",
+    "description": "Manage CI/CD pipelines, Kubernetes clusters and infrastructure on AWS, scripting in Python, strong Git and system design fundamentals."
+  },
+  {
+    "title": "Business Intelligence Analyst",
+    "company": "Retail F",
+    "posted_at": "2026-09-08",
+    "description": "Build Power BI and Tableau reports from SQL Server data, partner with stakeholders across departments, basic Python for automation a plus."
+  },
+  {
+    "title": "Backend Software Engineer (Python)",
+    "company": "Tech Co I",
+    "posted_at": "2026-09-21",
+    "description": "Design and build backend services in Python and Go, own microservices in production, collaborate with frontend engineers using JavaScript and TypeScript."
+  },
+  {
+    "title": "Data Engineer",
+    "company": "Fintech D",
+    "posted_at": "2026-09-23",
+    "description": "Build data pipelines with Python, SQL, Apache Spark and Airflow on AWS; strong understanding of distributed systems and data modeling."
+  }
+]

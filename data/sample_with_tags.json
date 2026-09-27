@@ -1,0 +1,38 @@
+[
+  {
+    "source": "techmap",
+    "title": "Lead Data Architect",
+    "company": "Enterprise Tech X",
+    "country": "US",
+    "posted_at": "2026-09-25",
+    "skills_raw": ["Snowflake", "Python", "SQL", "Apache Spark", "AWS"],
+    "description": "Architect enterprise data platforms using Snowflake, AWS, Spark, and SQL. Python automation and data modeling expertise required."
+  },
+  {
+    "source": "techmap",
+    "title": "Full Stack Engineer",
+    "company": "Cloud Innovators",
+    "country": "US",
+    "posted_at": "2026-09-26",
+    "skills_raw": ["JavaScript", "TypeScript", "Python", "Docker", "CI/CD"],
+    "description": "Develop full-stack web applications with modern frontend frameworks and Python backend microservices."
+  },
+  {
+    "source": "techmap",
+    "title": "Senior AI Research Engineer",
+    "company": "NextGen Intelligence",
+    "country": "US",
+    "posted_at": "2026-09-24",
+    "skills_raw": ["PyTorch", "LLM / RAG", "Python", "Deep learning", "Kubernetes"],
+    "description": "Lead applied LLM research, building retrieval-augmented generation systems and fine-tuning foundation models with PyTorch."
+  },
+  {
+    "source": "techmap",
+    "title": "Data Visualization Specialist",
+    "company": "Insights Corp",
+    "country": "UK",
+    "posted_at": "2026-09-21",
+    "skills_raw": ["Tableau", "Power BI", "SQL", "Communication"],
+    "description": "Deliver executive dashboards in Tableau and Power BI with SQL backends, presenting insights to company leaders."
+  }
+]
